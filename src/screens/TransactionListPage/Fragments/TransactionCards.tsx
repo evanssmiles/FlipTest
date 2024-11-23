@@ -13,7 +13,13 @@ interface TransactionCardProps {
   status: 'PENDING' | 'SUCCESS';
 }
 
-const TransactionCards: React.FC<{data: TransactionCardProps}> = ({data}) => {
+// Define the props that the component will receive
+interface TransactionCardsProps {
+  data: TransactionCardProps;
+  onPress: () => void; // Add onPress function prop
+}
+
+const TransactionCards: React.FC<TransactionCardsProps> = ({data, onPress}) => {
   const {
     beneficiary_name,
     beneficiary_bank,
@@ -27,6 +33,7 @@ const TransactionCards: React.FC<{data: TransactionCardProps}> = ({data}) => {
   const borderColor = status === 'PENDING' ? 'orange' : '#4CAF50';
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={[styles.container, {borderLeftColor: borderColor}]}>
       <View style={styles.content}>
         <Text style={styles.title}>

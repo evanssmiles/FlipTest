@@ -2,8 +2,21 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import TransactionCards from './Fragments/TransactionCards';
 import {fetchTransactions} from '../../services/api';
+import {useNavigation} from '@react-navigation/native';
+import {
+  RootStackParamInterface,
+  TransactionData,
+} from '../../navigation/RootStackParamInterface';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+// Type the navigation prop for the specific screen
+type DetailTransactionPageScreenNavigationProp = StackNavigationProp<
+  RootStackParamInterface,
+  'DetailTransactionPage' // Specify the target screen
+>;
 
 const TransactionListPage = () => {
+  const navigation = useNavigation<DetailTransactionPageScreenNavigationProp>();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -37,6 +50,10 @@ const TransactionListPage = () => {
     }
   };
 
+  const onPress = (item: TransactionData) => {
+    navigation.navigate('DetailTransactionPage', {data: item});
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -54,7 +71,9 @@ const TransactionListPage = () => {
       <FlatList
         data={Object.values(data)}
         keyExtractor={item => (item as {id: string}).id} // Using the key (transaction ID)
-        renderItem={({item}) => <TransactionCards data={item} />}
+        renderItem={({item}) => (
+          <TransactionCards data={item} onPress={() => onPress(item)} />
+        )}
         contentContainerStyle={styles.contentStyle}
         refreshing={refreshing}
         onRefresh={onRefresh}
