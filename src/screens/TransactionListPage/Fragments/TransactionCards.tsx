@@ -80,13 +80,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'black',
   },
   recipientName: {
     fontSize: 14,
+    color: 'black',
   },
   amount: {
     fontSize: 14,
-    color: '#777',
+    color: 'black',
   },
   label: {
     padding: 10,
