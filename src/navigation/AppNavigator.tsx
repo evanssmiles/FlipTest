@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import TransactionListPage from '../screens/TransactionListPage/TransactionListPage';
 import DetailTransactionPage from '../screens/DetailTransactionPage/DetailTransactionPage';
 import {StatusBar} from 'react-native';
-import { RootStackParamInterface } from './RootStackParamInterface';
+import {RootStackParamInterface} from './RootStackParamInterface';
 
 const Stack = createStackNavigator<RootStackParamInterface>();
 
@@ -20,6 +20,7 @@ const AppNavigator = () => (
       <Stack.Screen
         name="DetailTransactionPage"
         component={DetailTransactionPage}
+        options={{headerTitle: ''}}
       />
     </Stack.Navigator>
   </NavigationContainer>
