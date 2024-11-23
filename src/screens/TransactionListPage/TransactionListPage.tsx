@@ -70,6 +70,7 @@ const TransactionListPage = () => {
       <Text>TransactionListPage</Text>
       <FlatList
         data={Object.values(data)}
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => (item as {id: string}).id} // Using the key (transaction ID)
         renderItem={({item}) => (
           <TransactionCards data={item} onPress={() => onPress(item)} />
