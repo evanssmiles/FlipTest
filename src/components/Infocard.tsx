@@ -1,15 +1,22 @@
 import React from 'react';
-import {View, Text, StyleSheet, ViewStyle, TextStyle} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  useWindowDimensions,
+} from 'react-native';
 
 interface InfoCardProps {
   title1: string;
-  title2?: string; // Made title2 optional
+  title2?: string;
   subtitle1: string;
-  subtitle2?: string; // Made subtitle2 optional
+  subtitle2?: string;
   titleStyle?: TextStyle;
   subtitleStyle?: TextStyle;
   containerStyle?: ViewStyle;
-  singleColumn?: boolean; // New prop to switch to a single column layout
+  singleColumn?: boolean;
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -20,11 +27,14 @@ const InfoCard: React.FC<InfoCardProps> = ({
   titleStyle,
   subtitleStyle,
   containerStyle,
-  singleColumn = false, // Default to false, meaning two columns
+  singleColumn = false,
 }) => {
+  const {width} = useWindowDimensions();
+
+  const marginLeft = width * 0.2;
+
   return (
     <View style={[styles.container, containerStyle]}>
-      {/* Conditionally render one or two columns */}
       {singleColumn ? (
         <View style={styles.column}>
           <Text style={[styles.title, titleStyle]}>{title1}</Text>
@@ -32,11 +42,11 @@ const InfoCard: React.FC<InfoCardProps> = ({
         </View>
       ) : (
         <>
-          <View style={styles.column}>
+          <View style={[styles.column, styles.leftColumn]}>
             <Text style={[styles.title, titleStyle]}>{title1}</Text>
             <Text style={[styles.title, subtitleStyle]}>{subtitle1}</Text>
           </View>
-          <View style={[styles.column, styles.rightColumn]}>
+          <View style={[styles.column, styles.rightColumn, {marginLeft}]}>
             <Text style={[styles.title, titleStyle]}>{title2}</Text>
             <Text style={[styles.title, subtitleStyle]}>{subtitle2}</Text>
           </View>
@@ -54,9 +64,15 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  leftColumn: {
+    flex: 1,
+    alignItems: 'flex-start',
   },
   rightColumn: {
-    marginRight: 40,
+    flex: 1,
+    alignItems: 'flex-start',
   },
   title: {
     fontSize: 16,
