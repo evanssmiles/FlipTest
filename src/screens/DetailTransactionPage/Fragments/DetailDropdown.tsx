@@ -5,6 +5,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import InfoCard from '../../../components/Infocard';
 import {bankFormat} from '../../../utils/BankFormat';
 import {dateFormat} from '../../../utils/DateFormat';
+import colors from '../../../styles/Colors';
 
 interface DetailDropdownProps {
   beneficiary_name: string;
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   textButton: {
-    color: 'orange',
+    color: colors.orange,
     fontSize: 16,
   },
   titleBank: {

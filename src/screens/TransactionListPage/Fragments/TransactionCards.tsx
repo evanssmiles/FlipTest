@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {bankFormat} from '../../../utils/BankFormat';
 import {dateFormat} from '../../../utils/DateFormat';
+import colors from '../../../styles/Colors';
 
 // Define the type of the data prop passed from FlatList
 interface TransactionCardProps {
@@ -30,7 +31,7 @@ const TransactionCards: React.FC<TransactionCardsProps> = ({data, onPress}) => {
   } = data;
 
   // Determine border color based on status
-  const borderColor = status === 'PENDING' ? 'orange' : '#4CAF50';
+  const borderColor = status === 'PENDING' ? colors.orange : colors.green;
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -104,10 +105,10 @@ const styles = StyleSheet.create({
   pendingLabel: {
     backgroundColor: 'white', // Pending button color
     borderWidth: 2,
-    borderColor: 'orange',
+    borderColor: colors.orange,
   },
   successLabel: {
-    backgroundColor: '#4CAF50', // Success button color
+    backgroundColor: colors.green, // Success button color
   },
   labelText: {
     color: '#FFFFFF',

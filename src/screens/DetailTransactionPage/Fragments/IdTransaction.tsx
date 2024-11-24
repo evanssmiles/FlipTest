@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Clipboard from '@react-native-clipboard/clipboard';
+import colors from '../../../styles/Colors';
 
 type IdTransactionProps = {
   id: string;
@@ -22,7 +23,7 @@ const IdTransaction: React.FC<IdTransactionProps> = ({id}) => {
           }}
           name="content-copy"
           size={20}
-          color="orange"
+          color={colors.orange}
           onPress={copyToClipboard}
         />
       </TouchableOpacity>

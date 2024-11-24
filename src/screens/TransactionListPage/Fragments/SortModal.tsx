@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import colors from '../../../styles/Colors';
 
 type SortModalProps = {
   visible: boolean;
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: 'orange',
+    borderColor: colors.orange,
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: 'orange', // Blue color for selected radio button
+    backgroundColor: colors.orange, // orange color for selected radio button
   },
   optionText: {
     fontSize: 16,

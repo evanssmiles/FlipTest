@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
+import colors from '../styles/Colors';
 
 interface HeaderSearchFilterProps {
   value: string;
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   buttonText: {
-    color: 'orange',
+    color: colors.orange,
     fontWeight: 'bold',
     fontSize: 14,
   },
