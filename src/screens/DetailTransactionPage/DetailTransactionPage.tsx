@@ -27,14 +27,9 @@ type DetailTransactionPageProps = {
             sender_bank={data.sender_bank}
             beneficiary_bank={data.beneficiary_bank}
         />
-        {/* <Text>Beneficiary Name: {data.beneficiary_name}</Text>
-        <Text>Amount: {data.amount}</Text>
-        <Text>Status: {data.status}</Text> */}
         </View>
       </View>
     );
   };
 
 export default DetailTransactionPage
-
-// const styles = StyleSheet.create({})
