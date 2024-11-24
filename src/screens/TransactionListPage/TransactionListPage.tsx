@@ -9,14 +9,13 @@ import {
 } from '../../navigation/RootStackParamInterface';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {HeaderSearchFilter} from '../../components';
-import {useDebounce} from '../../hooks/useDebounce'; // Import the reusable debounce hook
+import {useDebounce} from '../../hooks/useDebounce';
 import SortModal from './Fragments/SortModal';
 import {getSortOptionLabel} from '../../utils';
 
-// Type the navigation prop for the specific screen
 type DetailTransactionPageScreenNavigationProp = StackNavigationProp<
   RootStackParamInterface,
-  'DetailTransactionPage' // Specify the target screen
+  'DetailTransactionPage'
 >;
 
 const TransactionListPage = () => {
@@ -26,7 +25,7 @@ const TransactionListPage = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState('');
-  const [modalVisible, setModalVisible] = useState(false); // State to control the modal visibility
+  const [modalVisible, setModalVisible] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState<
     'none' | 'asc' | 'desc' | 'dateAsc' | 'dateDesc'
   >('none'); // Track the selected sort option
@@ -199,7 +198,7 @@ const TransactionListPage = () => {
       )}
 
       <FlatList
-        data={sortedData} // Use the filtered data for display
+        data={sortedData} // Use the sorted data for display
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id} // Using the key (transaction ID)
         renderItem={({item}) => (
