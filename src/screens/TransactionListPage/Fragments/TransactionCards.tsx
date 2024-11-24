@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {bankFormat} from '../../../utils/BankFormat';
 import {dateFormat} from '../../../utils/DateFormat';
 import colors from '../../../styles/Colors';
+import {moneyFortmat} from '../../../utils/MoneyFormat';
 
 // Define the type of the data prop passed from FlatList
 interface TransactionCardProps {
@@ -44,7 +45,7 @@ const TransactionCards: React.FC<TransactionCardsProps> = ({data, onPress}) => {
           {beneficiary_name.toUpperCase()}
         </Text>
         <Text style={styles.amount}>
-          Rp{amount} • {dateFormat(created_at)}
+          Rp{moneyFortmat(amount)} • {dateFormat(created_at)}
         </Text>
       </View>
       <View

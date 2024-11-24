@@ -6,6 +6,7 @@ import InfoCard from '../../../components/Infocard';
 import {bankFormat} from '../../../utils/BankFormat';
 import {dateFormat} from '../../../utils/DateFormat';
 import colors from '../../../styles/Colors';
+import {moneyFortmat} from '../../../utils/MoneyFormat';
 
 interface DetailDropdownProps {
   beneficiary_name: string;
@@ -46,7 +47,7 @@ const DetailDropdown: React.FC<DetailDropdownProps> = ({
             title1={beneficiary_name}
             subtitle1={account_number}
             title2="NOMINAL"
-            subtitle2={`Rp${amount}`}
+            subtitle2={`Rp${moneyFortmat(amount)}`}
             titleStyle={styles.title}
             subtitleStyle={styles.subtitle}
           />
