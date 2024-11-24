@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import TransactionCards from './Fragments/TransactionCards';
 import {fetchTransactions} from '../../services/api';
 import {useNavigation} from '@react-navigation/native';
@@ -31,17 +31,20 @@ const TransactionListPage = () => {
     'none' | 'asc' | 'desc' | 'dateAsc' | 'dateDesc'
   >('none'); // Track the selected sort option
 
-  const handleSearch = (text: string) => {
-    const lowercasedText = text.toLowerCase();
-    const filtered = data.filter(
-      ({beneficiary_bank, sender_bank, beneficiary_name, amount}) =>
-        beneficiary_bank.toLowerCase().includes(lowercasedText) ||
-        sender_bank.toLowerCase().includes(lowercasedText) ||
-        beneficiary_name.toLowerCase().includes(lowercasedText) ||
-        amount.toString().includes(lowercasedText), // Convert amount to string temporarily
-    );
-    setFilteredData(filtered); // The original amount remains a number
-  };
+  const handleSearch = useCallback(
+    (text: string) => {
+      const lowercasedText = text.toLowerCase();
+      const filtered = data.filter(
+        ({beneficiary_bank, sender_bank, beneficiary_name, amount}) =>
+          beneficiary_bank.toLowerCase().includes(lowercasedText) ||
+          sender_bank.toLowerCase().includes(lowercasedText) ||
+          beneficiary_name.toLowerCase().includes(lowercasedText) ||
+          amount.toString().includes(lowercasedText), // Convert amount to string temporarily
+      );
+      setFilteredData(filtered); // The original amount remains a number
+    },
+    [data],
+  );
 
   // Debounced search handler
   const debouncedSearch = useDebounce(handleSearch, 300);
@@ -125,6 +128,38 @@ const TransactionListPage = () => {
     setModalVisible(false); // Close modal after sorting
   };
 
+  // This is the data that we will be using for our flatlist
+  const sortedData = useMemo(() => {
+    let sorted = [...filteredData];
+    switch (selectedSortOption) {
+      case 'asc':
+        sorted = sorted.sort((a, b) =>
+          a.beneficiary_name.localeCompare(b.beneficiary_name),
+        );
+        break;
+      case 'desc':
+        sorted = sorted.sort((a, b) =>
+          b.beneficiary_name.localeCompare(a.beneficiary_name),
+        );
+        break;
+      case 'dateAsc':
+        sorted = sorted.sort(
+          (a, b) =>
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+        );
+        break;
+      case 'dateDesc':
+        sorted = sorted.sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        );
+        break;
+      default:
+        break;
+    }
+    return sorted;
+  }, [filteredData, selectedSortOption]);
+
   // Toggle the sort modal
   const onPressSort = () => {
     setModalVisible(true);
@@ -161,7 +196,7 @@ const TransactionListPage = () => {
       />
 
       <FlatList
-        data={filteredData} // Use the filtered data for display
+        data={sortedData} // Use the filtered data for display
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id} // Using the key (transaction ID)
         renderItem={({item}) => (
@@ -170,6 +205,8 @@ const TransactionListPage = () => {
         contentContainerStyle={styles.contentStyle}
         refreshing={refreshing}
         onRefresh={onRefresh}
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
       />
     </View>
   );
@@ -193,7 +230,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'white',
   },
   modalContainer: {
     width: 300,
