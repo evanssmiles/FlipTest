@@ -1,4 +1,4 @@
-export function bankFormat(input: string): string {
+export const bankFormat = (input: string): string => {
   const words = input.split('');
 
   if (words.length <= 4) {
@@ -9,4 +9,6 @@ export function bankFormat(input: string): string {
 
   // Default condition
   return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase(); // Capitalize the first letter
-}
+};
+
+export default bankFormat;

@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import Divider from '../../../components/Divider';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import InfoCard from '../../../components/Infocard';
-import {bankFormat} from '../../../utils/BankFormat';
-import {dateFormat} from '../../../utils/DateFormat';
+import {InfoCard, Divider} from '../../../components';
 import colors from '../../../styles/Colors';
-import {moneyFortmat} from '../../../utils/MoneyFormat';
+import {moneyFormat, bankFormat, dateFormat} from '../../../utils';
 
 interface DetailDropdownProps {
   beneficiary_name: string;
@@ -47,7 +44,7 @@ const DetailDropdown: React.FC<DetailDropdownProps> = ({
             title1={beneficiary_name}
             subtitle1={account_number}
             title2="NOMINAL"
-            subtitle2={`Rp${moneyFortmat(amount)}`}
+            subtitle2={`Rp${moneyFormat(amount)}`}
             titleStyle={styles.title}
             subtitleStyle={styles.subtitle}
           />

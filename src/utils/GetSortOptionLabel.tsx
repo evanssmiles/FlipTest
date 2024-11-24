@@ -16,3 +16,5 @@ export const getSortOptionLabel = (
       return ''; // This should never be reached due to TypeScript type checking
   }
 };
+
+export default getSortOptionLabel;

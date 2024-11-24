@@ -7,3 +7,5 @@ export const dateFormat = (input: string): string => {
 
   return `${day} ${month} ${year}`; // Return the formatted string
 };
+
+export default dateFormat;

@@ -1,9 +1,9 @@
-import {Text, View} from 'react-native';
-import React, { useEffect } from 'react';
+import {View} from 'react-native';
+import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamInterface } from '../../navigation/RootStackParamInterface';
 import IdTransaction from './Fragments/IdTransaction';
-import Divider from '../../components/Divider';
+import {Divider} from '../../components';
 import DetailDropdown from './Fragments/DetailDropdown';
 
 type DetailTransactionPageProps = {
