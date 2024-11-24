@@ -8,9 +8,9 @@ interface TransactionCardProps {
   beneficiary_name: string;
   sender_bank: string;
   beneficiary_bank: string;
-  amount: string;
+  amount: number;
   created_at: string;
-  status: 'PENDING' | 'SUCCESS';
+  status: string;
 }
 
 // Define the props that the component will receive

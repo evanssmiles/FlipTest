@@ -14,7 +14,7 @@ type DetailTransactionPageProps = {
     const { data } = route.params;
     return (
       <View style={{flex: 1}}>
-        <View style={{flex: 1, backgroundColor: 'white', marginTop: 20, marginBottom: 60}}>
+        <View style={{flex: 1, backgroundColor: 'white', marginTop: 20}}>
         <IdTransaction id={data.id}  />
         <Divider thickness={0.4} />
         <DetailDropdown 

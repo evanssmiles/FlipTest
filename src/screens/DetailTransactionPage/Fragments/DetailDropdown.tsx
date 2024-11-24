@@ -38,14 +38,14 @@ const DetailDropdown: React.FC<DetailDropdownProps> = ({
     if (dropdown) {
       return (
         <View style={styles.dropdownContainer}>
-          <Text style={styles.title}>
+          <Text style={styles.titleBank}>
             {bankFormat(sender_bank)} → {bankFormat(beneficiary_bank)}
           </Text>
           <InfoCard
             title1={beneficiary_name}
             subtitle1={account_number}
             title2="NOMINAL"
-            subtitle2={`Rp ${amount}`}
+            subtitle2={`Rp${amount}`}
             titleStyle={styles.title}
             subtitleStyle={styles.subtitle}
           />
@@ -110,6 +110,11 @@ const styles = StyleSheet.create({
   textButton: {
     color: 'orange',
     fontSize: 16,
+  },
+  titleBank: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
   },
   title: {
     fontSize: 16,

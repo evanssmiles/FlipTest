@@ -8,6 +8,10 @@ import {
   TransactionData,
 } from '../../navigation/RootStackParamInterface';
 import {StackNavigationProp} from '@react-navigation/stack';
+import HeaderSearchFilter from '../../components/HeaderSearchFilter';
+import {useDebounce} from '../../hooks/useDebounce'; // Import the reusable debounce hook
+import SortModal from './Fragments/SortModal';
+import {getSortOptionLabel} from '../../utils/GetSortOptionLabel';
 
 // Type the navigation prop for the specific screen
 type DetailTransactionPageScreenNavigationProp = StackNavigationProp<
@@ -17,15 +21,42 @@ type DetailTransactionPageScreenNavigationProp = StackNavigationProp<
 
 const TransactionListPage = () => {
   const navigation = useNavigation<DetailTransactionPageScreenNavigationProp>();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<TransactionData[]>([]);
+  const [filteredData, setFilteredData] = useState<TransactionData[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [query, setQuery] = useState('');
+  const [modalVisible, setModalVisible] = useState(false); // State to control the modal visibility
+  const [selectedSortOption, setSelectedSortOption] = useState<
+    'none' | 'asc' | 'desc' | 'dateAsc' | 'dateDesc'
+  >('none'); // Track the selected sort option
+
+  const handleSearch = (text: string) => {
+    const lowercasedText = text.toLowerCase();
+    const filtered = data.filter(
+      ({beneficiary_bank, sender_bank, beneficiary_name, amount}) =>
+        beneficiary_bank.toLowerCase().includes(lowercasedText) ||
+        sender_bank.toLowerCase().includes(lowercasedText) ||
+        beneficiary_name.toLowerCase().includes(lowercasedText) ||
+        amount.toString().includes(lowercasedText), // Convert amount to string temporarily
+    );
+    setFilteredData(filtered); // The original amount remains a number
+  };
+
+  // Debounced search handler
+  const debouncedSearch = useDebounce(handleSearch, 300);
+
+  const handleSearchTermChange = (text: string) => {
+    setQuery(text);
+    debouncedSearch(text);
+  };
 
   const loadData = async () => {
     setLoading(true);
     try {
       const transactions = await fetchTransactions();
-      setData(transactions); // Set the fetched data
+      setData(Object.values(transactions)); // Set the fetched data
+      setFilteredData(Object.values(transactions)); // Initialize filtered data
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -50,8 +81,53 @@ const TransactionListPage = () => {
     }
   };
 
-  const onPress = (item: TransactionData) => {
+  // Navigate to detail transaction once any of the cards is pressed
+  const onPressCard = (item: TransactionData) => {
     navigation.navigate('DetailTransactionPage', {data: item});
+  };
+
+  const sortData = (
+    option: 'none' | 'asc' | 'desc' | 'dateAsc' | 'dateDesc',
+  ) => {
+    let sortedData = [...filteredData];
+
+    // Update the selected sort option when a user selects one
+    setSelectedSortOption(option);
+
+    switch (option) {
+      case 'asc':
+        sortedData = sortedData.sort((a, b) =>
+          a.beneficiary_name.localeCompare(b.beneficiary_name),
+        );
+        break;
+      case 'desc':
+        sortedData = sortedData.sort((a, b) =>
+          b.beneficiary_name.localeCompare(a.beneficiary_name),
+        );
+        break;
+      case 'dateAsc':
+        sortedData = sortedData.sort(
+          (a, b) =>
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+        );
+        break;
+      case 'dateDesc':
+        sortedData = sortedData.sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFilteredData(sortedData);
+    setModalVisible(false); // Close modal after sorting
+  };
+
+  // Toggle the sort modal
+  const onPressSort = () => {
+    setModalVisible(true);
   };
 
   useEffect(() => {
@@ -65,15 +141,31 @@ const TransactionListPage = () => {
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
-      <Text>TransactionListPage</Text>
+      <HeaderSearchFilter
+        value={query}
+        onChangeText={handleSearchTermChange}
+        placeholder="Cari nama, bank, atau nominal"
+        onPress={onPressSort}
+        title={getSortOptionLabel(selectedSortOption)}
+      />
+
+      {/* Sort Modal */}
+      <SortModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onSort={sortData}
+        selectedOption={selectedSortOption}
+      />
+
       <FlatList
-        data={Object.values(data)}
+        data={filteredData} // Use the filtered data for display
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => (item as {id: string}).id} // Using the key (transaction ID)
+        keyExtractor={item => item.id} // Using the key (transaction ID)
         renderItem={({item}) => (
-          <TransactionCards data={item} onPress={() => onPress(item)} />
+          <TransactionCards data={item} onPress={() => onPressCard(item)} />
         )}
         contentContainerStyle={styles.contentStyle}
         refreshing={refreshing}
@@ -95,6 +187,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentStyle: {
-    paddingBottom: 50,
+    paddingBottom: 100,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  sortOption: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });
