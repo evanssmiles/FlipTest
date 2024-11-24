@@ -188,12 +188,15 @@ const TransactionListPage = () => {
       />
 
       {/* Sort Modal */}
-      <SortModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onSort={sortData}
-        selectedOption={selectedSortOption}
-      />
+
+      {modalVisible && (
+        <SortModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onSort={sortData}
+          selectedOption={selectedSortOption}
+        />
+      )}
 
       <FlatList
         data={sortedData} // Use the filtered data for display
