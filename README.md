@@ -163,5 +163,5 @@ If you can't get this to work, see the [Troubleshooting](https://reactnative.dev
 
 # My Contacts
 
-- [LinkedIn]([https://reactnative.dev](https://www.linkedin.com/in/evanssmiles/)) - Get to know more about me
+- [LinkedIn](https://www.linkedin.com/in/evanssmiles/) - Get to know more about me
 - [Gitlab](https://gitlab.com/evanssmiles) - My other projects
